@@ -1,0 +1,10 @@
+PROGRAM ILLEGALSETS;
+TYPE STUFF=(ZERO,ONE,TWO);
+VAR I: SET OF STUFF;
+    J: SET OF 0..2;
+
+BEGIN
+  I:= [ZERO];
+  J:= [1,2];
+  IF I = J THEN ...  <<<< error here
+END.

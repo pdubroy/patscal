@@ -1,0 +1,24 @@
+VAR A: PACKED RECORD
+    C: INTEGER;
+    F: PACKED RECORD
+        R: CHAR;
+        K: BOOLEAN
+    END;
+    H: PACKED ARRAY [0..3] OF CHAR
+END;
+
+VAR B: PACKED RECORD
+    C: INTEGER;
+    F: RECORD
+        R: CHAR;
+        K: BOOLEAN
+    END;
+    H: PACKED ARRAY [0..3] OF CHAR
+END;
+
+VAR K: PACKED RECORD
+    B: BOOLEAN;
+    CASE F: BOOLEAN OF
+        TRUE: (Z: INTEGER);
+        FALSE: (M: PACKED ARRAY [0..3] OF CHAR)
+END;
