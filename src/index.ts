@@ -14,10 +14,11 @@ export const grammar = ohm.grammar(`
 
     Expression = SimpleExpression (relOp SimpleExpression)*
 
-    //+ "1 + 2"
+    //+ "1 + 2", "-1 OR 3", "-1 OR +3 + 2"
     SimpleExpression =
-      | sign Term (or Term)* -- or
-      | sign Term (addOp Term)* -- add
+      | SimpleExpression or sign? Term -- or
+      | SimpleExpression addOp sign? Term -- add
+      | sign? Term -- term
 
     Term = Factor (mulOp Factor)*
 
@@ -30,7 +31,7 @@ export const grammar = ohm.grammar(`
       | "'" any "'" -- char
 
     unsignedNumber =
-      | unsignedNumber "E" sign unsignedInteger -- scientific
+      | unsignedNumber "E" sign? unsignedInteger -- scientific
       | unsignedInteger "." unsignedInteger -- real
       | unsignedInteger -- int
 
@@ -40,7 +41,7 @@ export const grammar = ohm.grammar(`
     identifier = letter alnum*
 
     addOp = "+" | "-"
-    sign = ("+" | "-")?
+    sign = ("+" | "-")
     mulOp = "*" | "/" | div | mod | and
     relOp = "<=" | "<" | "=" | "<>" | ">=" | ">" | in
 
