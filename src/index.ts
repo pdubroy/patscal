@@ -12,6 +12,11 @@ export const grammar = ohm.grammar(`
     //+ "z9"
     Variable = identifier
 
+    unsignedNumber =
+      | unsignedNumber e sign? unsignedInteger -- scientific
+      | unsignedInteger "." unsignedInteger -- real
+      | unsignedInteger -- int
+
     Expression = SimpleExpression (relOp SimpleExpression)*
 
     //+ "1 + 2", "-1 OR 3", "-1 OR +3 + 2"
@@ -22,7 +27,10 @@ export const grammar = ohm.grammar(`
 
     Term = Factor (mulOp Factor)*
 
-    Factor = unsignedConstant
+    Factor =
+      | unsignedConstant
+      | Variable
+      | identifier
 
     unsignedConstant =
       | identifier
@@ -30,12 +38,12 @@ export const grammar = ohm.grammar(`
       | nil
       | "'" any "'" -- char
 
-    unsignedNumber =
-      | unsignedNumber "E" sign? unsignedInteger -- scientific
-      | unsignedInteger "." unsignedInteger -- real
-      | unsignedInteger -- int
-
     unsignedInteger = digit+
+
+    constant =
+      | sign identifier -- ident
+      | sign unsignedNumber -- number
+      | unsignedConstant
 
     //+ "x", "z9"
     identifier = letter alnum*
@@ -47,12 +55,13 @@ export const grammar = ohm.grammar(`
 
     keyword = program | in | or | div | mod | and | nil
 
-    program = "PROGRAM" ~alnum
-    in = "IN" ~alnum
-    or = "OR" ~alnum
-    div = "DIV" ~alnum
-    mod = "MOD" ~alnum
-    and = "AND" ~alnum
-    nil = "NIL" ~alnum
+    program = caseInsensitive<"PROGRAM"> ~alnum
+    in = caseInsensitive<"IN"> ~alnum
+    or = caseInsensitive<"OR"> ~alnum
+    div = caseInsensitive<"DIV"> ~alnum
+    mod = caseInsensitive<"MOD"> ~alnum
+    and = caseInsensitive<"AND"> ~alnum
+    nil = caseInsensitive<"NIL"> ~alnum
+    e = caseInsensitive<"E"> ~alnum
   }
 `);
