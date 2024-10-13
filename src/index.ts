@@ -27,6 +27,8 @@ export const grammar = ohm.grammar(`
 
     Term = Factor (mulOp Factor)*
 
+    // Like Free Pascal, allow a sign before a factor.
+    // https://www.freepascal.org/docs-html/ref/refse81.html#x143-16700012.1
     Factor =
       | unsignedConstant
       | Variable
